@@ -218,12 +218,12 @@ discordClient.on('message', async (msg) => {
         const mapKey = msg.guild.id;
         if (msg.content.trim().toLowerCase() == _CMD_JOIN) {
             if (!msg.member.voice.channelID) {
-                msg.reply('Error: please join a voice channel first.')
+                msg.reply('Lỗi: Hãy vào một Channel trước.')
             } else {
                 if (!guildMap.has(mapKey))
                     await connect(msg, mapKey)
                 else
-                    msg.reply('Already connected')
+                    msg.reply('Đã vào rồi!')
             }
         } else if (msg.content.trim().toLowerCase() == _CMD_LEAVE) {
             if (guildMap.has(mapKey)) {
@@ -232,14 +232,14 @@ discordClient.on('message', async (msg) => {
                 if (val.voice_Connection) val.voice_Connection.disconnect()
                 if (val.musicYTStream) val.musicYTStream.destroy()
                     guildMap.delete(mapKey)
-                msg.reply("Disconnected.")
+                msg.reply("Thoát.")
             } else {
-                msg.reply("Cannot leave because not connected.")
+                msg.reply("Không thể rời khỏi vì không được kết nối.")
             }
         }
         else if ( PLAY_CMDS.indexOf( msg.content.trim().toLowerCase().split('\n')[0].split(' ')[0] ) >= 0 ) {
             if (!msg.member.voice.channelID) {
-                msg.reply('Error: please join a voice channel first.')
+                msg.reply('Lỗi: Hãy vào một Channel trước.')
             } else {
                 if (!guildMap.has(mapKey))
                     await connect(msg, mapKey)
@@ -257,7 +257,7 @@ discordClient.on('message', async (msg) => {
                 val.debug = true;
         }
         else if (msg.content.trim().toLowerCase() == _CMD_TEST) {
-            msg.reply('hello back =)')
+            msg.reply('Hello quan que!!')
         }
         else if (msg.content.split('\n')[0].split(' ')[0].trim().toLowerCase() == _CMD_LANG) {
             const lang = msg.content.replace(_CMD_LANG, '').trim().toLowerCase()
@@ -276,12 +276,12 @@ discordClient.on('message', async (msg) => {
         }
     } catch (e) {
         console.log('discordClient message: ' + e)
-        msg.reply('Error#180: Something went wrong, try again or contact the developers if this keeps happening.');
+        msg.reply('Đã xảy ra sự cố, hãy cầu vận may của bạn tốt.');
     }
 })
 
 function getHelpString() {
-    let out = '**VOICE COMMANDS:**\n'
+    let out = '**Lệnh Voice:**\n'
         out += '```'
         out += 'music help\n'
         out += 'music play [random, favorites, <genre> or query]\n'
@@ -295,7 +295,7 @@ function getHelpString() {
         out += 'music clear list\n';
         out += '```'
 
-        out += '**TEXT COMMANDS:**\n'
+        out += '**Lệnh TEXT:**\n'
         out += '```'
         out += _CMD_HELP + '\n'
         out += _CMD_JOIN + '/' + _CMD_LEAVE + '\n'
@@ -318,9 +318,9 @@ function getHelpString() {
 async function connect(msg, mapKey) {
     try {
         let voice_Channel = await discordClient.channels.fetch(msg.member.voice.channelID);
-        if (!voice_Channel) return msg.reply("Error: The voice channel does not exist!");
+        if (!voice_Channel) return msg.reply("Lỗi: Kênh thoại không tồn tại!");
         let text_Channel = await discordClient.channels.fetch(msg.channel.id);
-        if (!text_Channel) return msg.reply("Error: The text channel does not exist!");
+        if (!text_Channel) return msg.reply("Lỗi: Kênh văn bản không tồn tại!");
         let voice_Connection = await voice_Channel.join();
         voice_Connection.play('sound.mp3', { volume: 0.5 });
         guildMap.set(mapKey, {
@@ -339,10 +339,10 @@ async function connect(msg, mapKey) {
             if (e) console.log(e);
             guildMap.delete(mapKey);
         })
-        msg.reply('connected!')
+        msg.reply('Đã zoooo!')
     } catch (e) {
         console.log('connect: ' + e)
-        msg.reply('Error: unable to join your voice channel.');
+        msg.reply('Không thể vô.');
         throw e;
     }
 }
@@ -504,7 +504,7 @@ async function music_message(message, mapKey) {
                     message.react(EMOJI_GREEN_CIRCLE)
                 } catch(e) {
                     console.log('music_message 464:' + e)
-                    message.channel.send('Failed processing spotify link: ' + qry);
+                    message.channel.send('Không xử lý được link spotify: ' + qry);
                 }
             } else {
 
